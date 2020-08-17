@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+	<head>
+		<meta charset="utf-8"/>
+		<title>パスデータ変換機</title>
+		<script src="./assets/js/lib/createjs.min.js"></script>
+		<script src="./assets/js/path.js"></script>
+		<style>
+			body {
+				margin: 0;
+				background: #444;
+			}
+			canvas {
+				border: 1px solid #000;
+				background: #FFF;
+			}
+		</style>
+	</head>
+	<body>
+	</body>
+	<script>
+		window.onload = () => {
+			showSamplePathData({
+				stage: 'shaketoba',
+				canvasWrapper: 'body',
+				courseImageDir: './assets/course',
+				coursePathImageDir: './assets/course-path',
+			});
+		}
+	</script>
+</html>

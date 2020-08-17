@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+	<head>
+		<meta charset="utf-8"/>
+		<title en-text="Gusher Map" class="for-translation">間欠泉マップ</title>
+		<script type="text/javascript" src="./assets/js/lib/html2canvas.min.js"></script>
+		<script type="text/javascript" src="./assets/js/lib/createjs.min.js"></script>
+		<script type="module" src="./assets/js/index.js"></script>
+		<link rel="stylesheet" href="./assets/css/style.css">
+		<style>
+			body {
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="gusherjs-wrapper">
+			<div id="gusherjs-canvas-wrapper" class="wrapper"></div>
+			<div id="gusherjs-element-wrapper" class="wrapper">
+		 		<div id="gusherjs-joseki-next" style="display: none;"></div>
+				<div id="gusherjs-joseki-text" style="display: none;"></div>
+		 		<div id="gusherjs-specify-result" style="display: none;"><span class="alphabet">A</span><span class="for-translation" en-text=" is specified">を指定しました</span></div>
+		 		<div id="gusherjs-please-specify" style="display: none;" class="for-translation" en-text="please specify winning gusher">当たりの栓を指定してください</div>
+			</div>
+			<div id="gusherjs-tools-wrapper" class="wrapper" data-html2canvas-ignore>
+				<p id="joseki-title" class="for-translation for-seeking" en-text="Established tactics">定石</p>
+				<select id="joseki-select" class="for-seeking"></select>
+				<div class="gusherjs-button for-translation" en-text="Settings" style="right: 171px; bottom: 12px;" onclick="gusherjs.showOptions()">オプション</div>
+				<!--
+				<div class="gusherjs-button for-translation" en-text="Return" style="right: 11px; bottom: 12px;" onclick="tyranoAPI.jump('learn.ks', 'Panel_1_Return')" id="gusherjs-return">戻る</div>
+				<div class="gusherjs-button for-translation for-seeking" en-text="Reset" style="right: 11px; bottom: 64px;" onclick="gusherjs.getCurrentCourse().reset(false)">リセット</div>
+				<div class="gusherjs-button for-translation for-seeking" en-text="Random" style="right: 11px; bottom: 114px;" onclick="gusherjs.getCurrentCourse().reset(true)">ランダム</div>
+				-->
+				<div class="gusherjs-button for-translation for-seeking" en-text="Specify" style="right: 171px; bottom: 64px;" onclick="gusherjs.getCurrentCourse().beginSpecifying()">当たりを指定</div>
+				<div class="gusherjs-button for-translation for-seeking" en-text="Reset" style="right: 11px; bottom: 12px;" onclick="gusherjs.getCurrentCourse().reset(false)">リセット</div>
+				<div class="gusherjs-button for-translation for-seeking" en-text="Random" style="right: 11px; bottom: 64px;" onclick="gusherjs.getCurrentCourse().reset(true)">ランダム</div>
+			</div>
+			<div id="gusherjs-options-wrapper" class="wrapper" style="display: none;" data-html2canvas-ignore>
+				<h4 class="for-translation" en-text="Select mode">栓をタップしたときの動作</h4>
+				<ul>
+					<li>
+						<input  id="gusherjs-mode-seeking-goldie" name="gusherjs-mode" type="radio" checked="checked" class="for-save">
+						<label for="gusherjs-mode-seeking-goldie" class="for-translation" en-text="Seeking goldie">キンシャケを探す</label>
+					</li>
+					<li>
+						<input  id="gusherjs-mode-check-water-vein-a" name="gusherjs-mode" type="radio" class="for-save">
+						<label for="gusherjs-mode-check-water-vein-a" class="for-translation" en-text="Checking water vein">水脈を見る</label>
+					</li>
+					<li>
+						<input  id="gusherjs-mode-check-goldie-path" name="gusherjs-mode" type="radio" class="for-save">
+						<label for="gusherjs-mode-check-goldie-path" class="for-translation" en-text="Checking goldie path">キンシャケルートを見る</label>
+					</li>
+				</ul>
+				<h4 class="for-translation" en-text="Settings">オプション</h4>
+				<ul>
+					<li>
+						<input  id="gusherjs-visible-suimyaku" type="checkbox" checked="checked" class="for-save">
+						<label for="gusherjs-visible-suimyaku" class="for-translation" en-text="Display water vein">水脈を表示する</label>
+					</li>
+					<li>
+						<input  id="gusherjs-visible-goldie-path" type="checkbox" checked="checked" class="for-save">
+						<label for="gusherjs-visible-goldie-path" class="for-translation" en-text="Display goldie path">キンシャケルートを表示する</label>
+					</li>
+					<li>
+						<input  id="gusherjs-highlight-candidates" type="checkbox" checked="checked" class="for-save">
+						<label for="gusherjs-highlight-candidates" class="for-translation" en-text="Highlight candidates">当たり候補を強調する</label>
+					</li>
+					<li>
+						<input  id="gusherjs-visible-procedure" type="checkbox" checked="checked" class="for-save">
+						<label for="gusherjs-visible-procedure" class="for-translation" en-text="Display procedure">定石手順を一括表示する</label>
+					</li>
+				</ul>
+				<h4 class="for-translation" en-text="Stage">ステージ</h4>
+				<select id="gusherjs-course-select">
+					<option class="for-translation" en-text="Spawning Grounds" value="shekenadamu-normal">シェケナダム</option>
+					<option class="for-translation" en-text="Spawning Grounds (High Tide)" value="shekenadamu-high">シェケナダム(満潮)</option>
+					<option class="for-translation" en-text="Marooner's Bay" value="domburako-normal">難破船ドン･ブラコ</option>
+					<option class="for-translation" en-text="Marooner's Bay (High Tide)" value="domburako-high">難破船ドン･ブラコ(満潮)</option>
+					<option class="for-translation" en-text="Lost Outpost" value="shaketoba-normal">海上集落シャケト場</option>
+					<option class="for-translation" en-text="Lost Outpost (High Tide)" value="shaketoba-high">海上集落シャケト場(満潮)</option>
+					<option class="for-translation" en-text="Salmonid Smokeyard" value="tokishirazu-normal">トキシラズいぶし工房</option>
+					<option class="for-translation" en-text="Salmonid Smokeyard (High Tide)" value="tokishirazu-high">トキシラズいぶし工房(満潮)</option>
+					<option class="for-translation" en-text="Ruins of Ark Polaris" value="porarisu-normal">朽ちた箱舟ポラリス</option>
+					<option class="for-translation" en-text="Ruins of Ark Polaris (High Tide)" value="porarisu-high">朽ちた箱舟ポラリス(満潮)</option>
+				</select>
+				<div class="gusherjs-button for-translation" en-text="Close" style="right: 176px; bottom: 16px;" onclick="gusherjs.hideOptions()">閉じる</div>
+				<div class="gusherjs-button for-translation" en-text="Save Image" style="left: 16px; bottom: 16px;" onclick="gusherjs.downloadCanvas()">スクショを保存</div>
+			</div>
+		</div>
+		<div id="meta-buttons" style="display: none;">
+			<button course="shekenadamu" tide="normal">シェケナダム</button>
+			<button course="shekenadamu" tide="high">シェケナダム(満潮)</button>
+			<button course="domburako" tide="normal">ドンブラコ</button>
+			<button course="domburako" tide="high">ドンブラコ(満潮)</button>
+			<button course="shaketoba" tide="normal">シャケト場</button>
+			<button course="shaketoba" tide="high">シャケト場(満潮)</button>
+			<button course="tokishirazu" tide="normal">トキシラズ</button>
+			<button course="tokishirazu" tide="high">トキシラズ(満潮)</button>
+			<button course="porarisu" tide="normal">ポラリス</button>
+			<button course="porarisu" tide="high">ポラリス(満潮)</button>
+		</div>
+	</body>
+	<script>
+		const navigatorLang = navigator.language || navigator.userLanguage || 'ja';
+		const locationQueries = ((url) => {
+			const urlStr = String(url);
+			const queryStr = urlStr.slice(urlStr.indexOf('?') + 1);
+			const queries = {};
+			if (!queryStr) {
+				return queries;
+			}
+			queryStr.split('&').forEach((queryStr) => {
+				const queryArr = queryStr.split('=');
+				queries[queryArr[0]] = queryArr[1];
+			});
+			return queries;
+		})(window.location);
+		const langKey = (locationQueries.lang === 'ja')
+			? 'ja'
+			: (locationQueries.lang === 'en')
+				? 'en'
+				: (navigatorLang.indexOf('ja') > -1)
+					? 'ja'
+					: 'en';
+		window.onload = () => {
+			gusherjs.start({
+				course: 'shekenadamu',
+				tide: 'normal',
+				lang: langKey,
+				width: window.innerWidth,
+				height: window.innerHeight,
+				courseImageDir: './assets/course',
+				gusherImageDir: './assets/img',
+			});
+			if (langKey === 'en') {
+				Array.prototype.forEach.call(document.head.querySelectorAll('.for-translation'), ($forTranslation) => {
+					$forTranslation.textContent = $forTranslation.getAttribute('en-text');
+				});
+			}
+		}
+	</script>
+</html>
