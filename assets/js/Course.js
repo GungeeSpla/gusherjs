@@ -58,6 +58,13 @@ export default class Course {
 		this.setAnswerGusher();
 	}
 
+	/** .getElementAgain()
+	 * 定義を解釈します。
+	 */
+	getElementAgain() {
+		this.$elementWrapper = $gusherjs.querySelector('#gusherjs-element-wrapper');
+	}
+
 	/** .parseDefine(def)
 	 * 定義を解釈します。
 	 */
@@ -1026,22 +1033,28 @@ export default class Course {
 				// 当たりが出ているかどうかで場合分け
 				if (this.isOpenedAnswerGusher) {
 					// 当たりが出ているならば
-					$josekiNextText.style.setProperty('display', 'none');
+					if ($josekiNextText) {
+						$josekiNextText.style.setProperty('display', 'none');
+					}
 					this.drawGoldiePath();
 				} else {
 					// 当たりが出ていないならば
 					if (this.selectedJosekiId > -1) {
 						if (this.isOffJoseki) {
-							$josekiNextText.style.setProperty('display', 'none');
+							if ($josekiNextText) {
+								$josekiNextText.style.setProperty('display', 'none');
+							}
 						} else {
 							const next = this.checkJosekiNext();
 							if (next) {
 								const nextGusher = this.getGusher(next);
 								this.josekiNextGusher = nextGusher;
-								$josekiNextText.textContent = nextGusher.jokenStr[this.opt.lang];
-								$josekiNextText.style.setProperty('display', 'block');
-								$josekiNextText.style.setProperty('left', `${nextGusher.cx}px`);
-								$josekiNextText.style.setProperty('top', `${nextGusher.cy}px`);
+								if ($josekiNextText) {
+									$josekiNextText.textContent = nextGusher.jokenStr[this.opt.lang];
+									$josekiNextText.style.setProperty('display', 'block');
+									$josekiNextText.style.setProperty('left', `${nextGusher.cx}px`);
+									$josekiNextText.style.setProperty('top', `${nextGusher.cy}px`);
+								}
 							}
 						}
 					}

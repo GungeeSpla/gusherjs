@@ -103,7 +103,7 @@ window.gusherjs = (() => {
 			transform = $base.style.getPropertyValue('transform');
 			$base.style.setProperty('transform', 'none');
 		}
-		html2canvas(document.querySelector("#drizzlerjs-wrapper"), {
+		html2canvas(document.querySelector("#gusherjs-wrapper"), {
 			backgroundColor: null,
 			x: 0,
 			y: 0,
@@ -111,7 +111,7 @@ window.gusherjs = (() => {
 			scrollY: 0,
 			logging: false,
 		}).then((canvas) => {
-			const courseName = currentCourse.name[initOptions.lang];
+			const courseName = currentCourse.def.name[initOptions.lang];
 			utilities.downloadCanvas(canvas, courseName + '-' + dateStr);
 			//document.body.appendChild(canvas)
 			html2canvasWorking = false;
@@ -160,7 +160,7 @@ window.gusherjs = (() => {
 		// キャッシュに格納するキーを作成
 		const key = `${course}-${tide}`;
 		// キャッシュにインスタンスが存在しないならば新しく作る！
-		if (courseCaches[key] === undefined) {
+		if (true || courseCaches[key] === undefined) {
 			// コースの定義データを作成する
 			let def;
 			// 満潮かどうか
